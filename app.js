@@ -1,11 +1,15 @@
-/* ── Header scroll state ─────────────────────────── */
+/* ── Header scroll ────────────────────────────────── */
 const header = document.getElementById('siteHeader');
 window.addEventListener('scroll', () => {
   header.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-/* ── Hero bg load animation ──────────────────────── */
-document.getElementById('heroBg').classList.add('loaded');
+/* ── Hero image load animation ───────────────────── */
+const heroBgImg = document.getElementById('heroBgImg');
+if (heroBgImg) {
+  heroBgImg.addEventListener('load', () => heroBgImg.classList.add('loaded'));
+  if (heroBgImg.complete) heroBgImg.classList.add('loaded');
+}
 
 /* ── Mobile menu ─────────────────────────────────── */
 const menuToggle = document.getElementById('menuToggle');
@@ -16,7 +20,6 @@ menuToggle.addEventListener('click', () => {
   menuToggle.classList.toggle('open', open);
   document.body.style.overflow = open ? 'hidden' : '';
 });
-
 document.querySelectorAll('[data-close]').forEach(link => {
   link.addEventListener('click', () => {
     mobileMenu.classList.remove('open');
@@ -25,7 +28,7 @@ document.querySelectorAll('[data-close]').forEach(link => {
   });
 });
 
-/* ── Scroll reveal (IntersectionObserver) ─────────── */
+/* ── Scroll reveal ───────────────────────────────── */
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -33,19 +36,19 @@ const revealObserver = new IntersectionObserver((entries) => {
       revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
   revealObserver.observe(el);
 });
 
-// Trigger hero reveals immediately
+// Hero reveals on load
 setTimeout(() => {
   document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('revealed'));
-}, 80);
+}, 100);
 
 /* ── Gallery filter ──────────────────────────────── */
-const filterBtns = document.querySelectorAll('.f-btn');
+const filterBtns  = document.querySelectorAll('.f-btn');
 const galleryGrid = document.getElementById('galleryGrid');
 
 filterBtns.forEach(btn => {
@@ -53,49 +56,55 @@ filterBtns.forEach(btn => {
     filterBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const filter = btn.dataset.filter;
-
-    document.querySelectorAll('.g-item').forEach((item, i) => {
+    let idx = 0;
+    document.querySelectorAll('.g-item').forEach(item => {
       const show = filter === 'all' || item.dataset.type === filter;
       item.style.display = show ? '' : 'none';
       if (show) {
-        item.style.animationDelay = (i * 0.05) + 's';
+        item.style.setProperty('--d', (idx * 0.05) + 's');
         item.classList.remove('revealed');
-        void item.offsetWidth; // reflow
+        void item.offsetWidth;
         item.classList.add('revealed');
+        idx++;
       }
     });
   });
 });
 
-/* ── File upload ─────────────────────────────────── */
-const dropZone  = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const uploadTrigger = document.getElementById('uploadTrigger');
-
-[dropZone, uploadTrigger].forEach(el => {
-  el.addEventListener('click', e => {
-    e.stopPropagation();
-    fileInput.click();
+/* ── Gallery item clicks (pre-loaded images) ─────── */
+document.querySelectorAll('.g-item[data-src]').forEach(item => {
+  item.addEventListener('click', () => {
+    openLightbox(item.dataset.src, item.dataset.type, item.dataset.caption);
   });
 });
 
-dropZone.addEventListener('dragover', e => {
-  e.preventDefault();
-  dropZone.classList.add('over');
-});
-['dragleave', 'dragend'].forEach(ev => {
-  dropZone.addEventListener(ev, () => dropZone.classList.remove('over'));
-});
-dropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropZone.classList.remove('over');
-  handleFiles(e.dataTransfer.files);
+/* ── Product & shampoo card clicks ───────────────── */
+document.querySelectorAll('.product-card, .shampoo-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const imgSrc = card.dataset.img || null;
+    const name   = card.querySelector('.product-name, .shampoo-name')?.textContent || '';
+    const note   = card.querySelector('.product-note, .shampoo-desc')?.textContent || '';
+    openProductModal(imgSrc, name, note);
+  });
 });
 
-fileInput.addEventListener('change', () => {
-  handleFiles(fileInput.files);
-  fileInput.value = '';
+/* ── File upload ─────────────────────────────────── */
+const dropZone     = document.getElementById('dropZone');
+const fileInput    = document.getElementById('fileInput');
+const uploadTrigger = document.getElementById('uploadTrigger');
+
+[dropZone, uploadTrigger].forEach(el => {
+  el.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
 });
+
+dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('over'));
+dropZone.addEventListener('dragend',   () => dropZone.classList.remove('over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('over');
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', () => { handleFiles(fileInput.files); fileInput.value = ''; });
 
 function handleFiles(files) {
   Array.from(files).forEach((file, i) => {
@@ -109,77 +118,48 @@ function handleFiles(files) {
 function addGalleryItem(src, title, type) {
   const item = document.createElement('div');
   item.className = 'g-item uploaded reveal';
-  item.dataset.type = type;
+  item.dataset.type    = type;
+  item.dataset.src     = src;
+  item.dataset.caption = title;
   item.style.setProperty('--d', '0s');
 
-  const thumbClass = type === 'video' ? 'vid-style' : 'img-style';
-
-  let mediaContent = '';
+  let mediaEl = '';
   if (type === 'video') {
-    mediaContent = `
+    mediaEl = `
       <video src="${src}" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;pointer-events:none;"></video>
       <div class="play-ring">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       </div>`;
   } else {
-    mediaContent = `<img src="${src}" alt="${title}" style="width:100%;height:100%;object-fit:cover;pointer-events:none;" />`;
+    mediaEl = `<img src="${src}" alt="${title}" />`;
   }
 
   item.innerHTML = `
-    <div class="g-thumb ${thumbClass}">
-      ${mediaContent}
+    <div class="g-thumb">
+      ${mediaEl}
       <div class="g-label">${title}</div>
       <div class="g-overlay"><span>${type === 'video' ? 'Video' : 'Image'}</span></div>
     </div>`;
 
   item.addEventListener('click', () => openLightbox(src, type, title));
   galleryGrid.prepend(item);
-
-  // observe for reveal
   requestAnimationFrame(() => revealObserver.observe(item));
 
-  // respect current filter
   const activeFilter = document.querySelector('.f-btn.active').dataset.filter;
-  if (activeFilter !== 'all' && activeFilter !== type) {
-    item.style.display = 'none';
-  }
+  if (activeFilter !== 'all' && activeFilter !== type) item.style.display = 'none';
 }
 
-/* ── Demo card clicks ────────────────────────────── */
-document.querySelectorAll('.g-item:not(.uploaded)').forEach(item => {
-  item.addEventListener('click', () => {
-    const type  = item.dataset.type;
-    const label = item.querySelector('.g-label')?.textContent || '';
-    openLightbox(null, type, label);
-  });
-});
-
 /* ── Lightbox ────────────────────────────────────── */
-const lightbox   = document.getElementById('lightbox');
-const lbContent  = document.getElementById('lbContent');
-const lbCaption  = document.getElementById('lbCaption');
-const lbClose    = document.getElementById('lbClose');
+const lightbox  = document.getElementById('lightbox');
+const lbContent = document.getElementById('lbContent');
+const lbCaption = document.getElementById('lbCaption');
+const lbClose   = document.getElementById('lbClose');
 
 function openLightbox(src, type, caption) {
   lbContent.innerHTML = '';
   lbCaption.textContent = caption || '';
 
-  if (!src) {
-    const placeholder = document.createElement('div');
-    const isVideo = type === 'video';
-    placeholder.style.cssText = [
-      'width:700px', 'max-width:90vw', 'aspect-ratio:16/9',
-      'border-radius:2px', 'display:flex', 'align-items:center',
-      'justify-content:center', 'font-family:var(--serif)',
-      'font-style:italic', 'letter-spacing:0.08em',
-      'color:rgba(255,255,255,0.2)', 'font-size:1rem',
-      isVideo
-        ? 'background:linear-gradient(135deg,#1f1d1b,#141210)'
-        : 'background:linear-gradient(135deg,#ccc5ba,#b8b0a4)'
-    ].join(';');
-    placeholder.textContent = caption || (isVideo ? 'Video' : 'Image');
-    lbContent.appendChild(placeholder);
-  } else if (type === 'video') {
+  if (type === 'video') {
     const v = document.createElement('video');
     v.src = src; v.controls = true; v.autoplay = true;
     lbContent.appendChild(v);
@@ -205,14 +185,51 @@ lbClose.addEventListener('click', closeLightbox);
 lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-/* ── Parallax on feature section ─────────────────── */
-const featureBg = document.querySelector('.feature-bg');
-if (featureBg) {
+/* ── Product modal (simple info overlay) ─────────── */
+function openProductModal(imgSrc, name, note) {
+  lbContent.innerHTML = '';
+  lbCaption.textContent = '';
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:0;max-width:800px;width:100%;border-radius:4px;overflow:hidden;background:#faf8f5;';
+
+  if (imgSrc) {
+    const imgWrap = document.createElement('div');
+    imgWrap.style.cssText = 'width:340px;flex-shrink:0;';
+    const img = document.createElement('img');
+    img.src = imgSrc; img.alt = name;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center top;';
+    imgWrap.appendChild(img);
+    wrap.appendChild(imgWrap);
+  }
+
+  const info = document.createElement('div');
+  info.style.cssText = 'padding:48px 40px;display:flex;flex-direction:column;justify-content:center;flex:1;';
+  info.innerHTML = `
+    <p style="font-size:0.68rem;font-weight:500;letter-spacing:0.2em;color:#b09a7a;text-transform:uppercase;margin-bottom:12px;">10101 PROFESSIONAL</p>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:#111010;margin-bottom:16px;line-height:1.3;">${name}</h3>
+    <p style="font-size:0.88rem;color:#9a9088;line-height:1.8;">${note}</p>
+    <a href="https://www.10101pro.shop" target="_blank"
+       style="display:inline-block;margin-top:32px;padding:12px 28px;border:1px solid #111010;font-size:0.72rem;font-weight:500;letter-spacing:0.15em;color:#111010;width:fit-content;transition:background 0.2s,color 0.2s;"
+       onmouseover="this.style.background='#111010';this.style.color='#fff';"
+       onmouseout="this.style.background='';this.style.color='#111010';">
+      온라인 스토어 →
+    </a>`;
+  wrap.appendChild(info);
+  lbContent.appendChild(wrap);
+
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+/* ── Feature parallax ────────────────────────────── */
+const featureImg = document.querySelector('.feature-img');
+if (featureImg) {
   window.addEventListener('scroll', () => {
-    const section = featureBg.closest('.feature-section');
+    const section = featureImg.closest('.feature-section');
     const rect = section.getBoundingClientRect();
     if (rect.bottom < 0 || rect.top > window.innerHeight) return;
     const pct = rect.top / window.innerHeight;
-    featureBg.style.transform = `scale(1.04) translateY(${pct * 30}px)`;
+    featureImg.style.transform = `scale(1.06) translateY(${pct * 24}px)`;
   }, { passive: true });
 }
