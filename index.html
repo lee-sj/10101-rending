@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BARO — Brand Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="#" class="site-logo">BARO</a>
+      <nav class="site-nav">
+        <a href="#story">STORY</a>
+        <a href="#collection">COLLECTION</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#about">ABOUT</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="uploadTrigger" title="미디어 추가">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </button>
+        <button class="icon-btn menu-toggle" id="menuToggle">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Mobile Menu ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <nav>
+      <a href="#story" class="mobile-link" data-close>STORY</a>
+      <a href="#collection" class="mobile-link" data-close>COLLECTION</a>
+      <a href="#gallery" class="mobile-link" data-close>GALLERY</a>
+      <a href="#about" class="mobile-link" data-close>ABOUT</a>
+    </nav>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-img" id="heroBg"></div>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-body">
+      <p class="hero-eyebrow reveal">A New Sensory Experience</p>
+      <h1 class="hero-title reveal">
+        <em>빛이 사라지면,</em><br />
+        향이 깨어난다
+      </h1>
+      <p class="hero-desc reveal">일상의 틈에서 발견하는<br />조용한 감각의 순간들</p>
+      <a href="#collection" class="hero-cta reveal">컬렉션 보기</a>
+    </div>
+    <div class="hero-scroll-line">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── Marquee ── -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>BRAND STUDIO</span><span>·</span>
+      <span>SCENT &amp; VISUAL</span><span>·</span>
+      <span>CRAFTED IN KOREA</span><span>·</span>
+      <span>SENSORY EXPERIENCE</span><span>·</span>
+      <span>BRAND STUDIO</span><span>·</span>
+      <span>SCENT &amp; VISUAL</span><span>·</span>
+      <span>CRAFTED IN KOREA</span><span>·</span>
+      <span>SENSORY EXPERIENCE</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- ── Story ── -->
+  <section class="story-section" id="story">
+    <div class="story-grid">
+      <div class="story-col-img reveal-left">
+        <div class="story-img-wrap">
+          <div class="story-img-placeholder">
+            <span>Brand Story</span>
+          </div>
+        </div>
+      </div>
+      <div class="story-col-text reveal-right">
+        <span class="label-tag">Our Philosophy</span>
+        <h2 class="story-heading">
+          우리가 만드는 것은<br />
+          <em>제품이 아닌 경험입니다</em>
+        </h2>
+        <p>매일의 루틴을 의미 있는 의식으로 전환하는 순간을 설계합니다. 세심하게 고른 원료와 감각적인 디테일로 일상 속 특별한 여백을 만듭니다.</p>
+        <p>When light fades and the world quiets down, our brand becomes the ritual that anchors you to the present.</p>
+        <a href="#collection" class="text-link">브랜드 스토리 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Collection ── -->
+  <section class="collection-section" id="collection">
+    <div class="section-top reveal">
+      <span class="label-tag">Collection</span>
+      <h2 class="section-title">제품 컬렉션</h2>
+    </div>
+    <div class="collection-grid">
+      <article class="product-card reveal" style="--d:0s">
+        <div class="product-thumb c1">
+          <div class="product-thumb-inner">
+            <span>No.01</span>
+          </div>
+          <div class="product-hover-label">자세히 보기</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">시그니처 에센스</p>
+          <p class="product-note">Cedarwood · Vetiver · Amber</p>
+        </div>
+      </article>
+      <article class="product-card reveal" style="--d:.08s">
+        <div class="product-thumb c2">
+          <div class="product-thumb-inner"><span>No.02</span></div>
+          <div class="product-hover-label">자세히 보기</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">모닝 리추얼</p>
+          <p class="product-note">Bergamot · Green Tea · Musk</p>
+        </div>
+      </article>
+      <article class="product-card reveal" style="--d:.16s">
+        <div class="product-thumb c3">
+          <div class="product-thumb-inner"><span>No.03</span></div>
+          <div class="product-hover-label">자세히 보기</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">나이트 세레머니</p>
+          <p class="product-note">Sandalwood · Rose · Oud</p>
+        </div>
+      </article>
+      <article class="product-card reveal" style="--d:.24s">
+        <div class="product-thumb c4">
+          <div class="product-thumb-inner"><span>No.04</span></div>
+          <div class="product-hover-label">자세히 보기</div>
+        </div>
+        <div class="product-info">
+          <p class="product-name">퓨어 세레니티</p>
+          <p class="product-note">White Tea · Jasmine · Lily</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── Full-width feature ── -->
+  <section class="feature-section reveal">
+    <div class="feature-bg-wrap">
+      <div class="feature-bg"></div>
+      <div class="feature-overlay"></div>
+    </div>
+    <div class="feature-text">
+      <span class="label-tag light">Craftsmanship</span>
+      <h2 class="feature-heading">
+        "감각이 기억되는<br />
+        <em>순간을 만듭니다</em>"
+      </h2>
+      <p>Every detail is intentional.<br />Every scent tells a story.</p>
+    </div>
+  </section>
+
+  <!-- ── Gallery ── -->
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-header reveal">
+      <div>
+        <span class="label-tag">Gallery</span>
+        <h2 class="section-title">미디어 갤러리</h2>
+      </div>
+      <div class="gallery-filters">
+        <button class="f-btn active" data-filter="all">All</button>
+        <button class="f-btn" data-filter="image">Image</button>
+        <button class="f-btn" data-filter="video">Video</button>
+      </div>
+    </div>
+
+    <!-- Upload Drop Zone -->
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" multiple accept="image/*,video/*" hidden />
+      <div class="drop-zone-inner">
+        <div class="drop-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <p class="drop-text">이미지 또는 영상을 드래그하거나 <u>클릭하여 업로드</u></p>
+        <p class="drop-hint">JPG · PNG · GIF · MP4 · MOV</p>
+      </div>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="gallery-masonry" id="galleryGrid">
+
+      <!-- Row 1: large + small -->
+      <div class="g-item large reveal" data-type="image" style="--d:0s">
+        <div class="g-thumb img-style s1">
+          <div class="g-label">Campaign 2024</div>
+          <div class="g-overlay"><span>Image</span></div>
+        </div>
+      </div>
+      <div class="g-item reveal" data-type="video" style="--d:.06s">
+        <div class="g-thumb vid-style s2">
+          <div class="play-ring">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="g-label">Brand Film</div>
+          <div class="g-overlay"><span>Video</span></div>
+        </div>
+      </div>
+      <div class="g-item reveal" data-type="image" style="--d:.12s">
+        <div class="g-thumb img-style s3">
+          <div class="g-label">Product Shot</div>
+          <div class="g-overlay"><span>Image</span></div>
+        </div>
+      </div>
+
+      <!-- Row 2: small + large -->
+      <div class="g-item reveal" data-type="video" style="--d:.06s">
+        <div class="g-thumb vid-style s4">
+          <div class="play-ring">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="g-label">Behind the Scenes</div>
+          <div class="g-overlay"><span>Video</span></div>
+        </div>
+      </div>
+      <div class="g-item reveal" data-type="image" style="--d:.12s">
+        <div class="g-thumb img-style s5">
+          <div class="g-label">Lifestyle</div>
+          <div class="g-overlay"><span>Image</span></div>
+        </div>
+      </div>
+      <div class="g-item large reveal" data-type="image" style="--d:.18s">
+        <div class="g-thumb img-style s6">
+          <div class="g-label">Limited Edition</div>
+          <div class="g-overlay"><span>Image</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <div class="about-numbers reveal">
+        <div class="num-item">
+          <strong>120<span>+</span></strong>
+          <p>Products</p>
+        </div>
+        <div class="num-divider"></div>
+        <div class="num-item">
+          <strong>50<span>K</span></strong>
+          <p>Customers</p>
+        </div>
+        <div class="num-divider"></div>
+        <div class="num-item">
+          <strong>8<span>yr</span></strong>
+          <p>Experience</p>
+        </div>
+      </div>
+      <div class="about-quote reveal">
+        <blockquote>
+          "우리는 매일의 습관이<br />감각적 의식이 되는 순간을 믿습니다."
+        </blockquote>
+        <cite>— Brand Director</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section class="contact-section">
+    <div class="contact-inner reveal">
+      <span class="label-tag light">Contact</span>
+      <h2 class="contact-heading">
+        함께 만들어가는<br />
+        <em>브랜드의 이야기</em>
+      </h2>
+      <p>제품 문의, 협업 제안, 미디어 연락</p>
+      <a href="mailto:hello@baro.kr" class="contact-email">hello@baro.kr</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-logo">BARO</span>
+      <p>© 2024 BARO Brand Studio. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Instagram</a>
+        <a href="#">Kakao</a>
+        <a href="#">Naver</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Lightbox ── -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lbClose">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="lb-content" id="lbContent"></div>
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
